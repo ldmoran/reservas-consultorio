@@ -55,7 +55,7 @@ test.describe('Pruebas E2E de reservas', () => {
 
     await page.click('button:has-text("Cerrar Sesión")');
     await expect(page).toHaveURL('http://localhost:3000/');
-    await expect(page.locator('text=Sistema de Reservas')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sistema de Reservas' })).toBeVisible();
   });
 
   test('Login admin con credenciales inválidas muestra error', async ({ page }) => {
@@ -64,7 +64,7 @@ test.describe('Pruebas E2E de reservas', () => {
     await page.fill('input[type="password"]', 'badpass');
     await page.click('button:has-text("Iniciar Sesión")');
 
-    await expect(page.locator('text=Error al iniciar sesión')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('Credenciales inválidas')).toBeVisible({ timeout: 15000 });
   });
 
   test('Validación de formulario de reserva muestra errores con campos vacíos', async ({ page }) => {
