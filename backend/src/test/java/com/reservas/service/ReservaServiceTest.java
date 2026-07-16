@@ -161,4 +161,84 @@ class ReservaServiceTest {
         assertEquals("Mariana", responses.get(0).getNombreCliente());
         assertEquals("Pedro", responses.get(1).getNombreCliente());
     }
+
+    @Test
+    // Verifica que se reutiliza el usuario existente y no se crea uno nuevo cuando el email ya está registrado.
+    void crearReserva_shouldReuseExistingUser_whenUsuarioExists() {
+        ReservaRequest request = new ReservaRequest();
+        request.setNombre("Carlos Ruiz");
+        request.setTelefono("111222333");
+        request.setEmail("carlos@example.com");
+        request.setIdServicio(2L);
+        request.setFecha(LocalDate.of(2026, 9, 5));
+        request.setHora(LocalTime.of(14, 0));
+
+        Usuario usuarioExistente = new Usuario("Carlos Ruiz", "111222333", "carlos@example.com");
+        usuarioExistente.setIdUsuario(4L);
+
+        Servicio servicio = new Servicio();
+        servicio.setIdServicio(2L);
+        servicio.setNombreServicio("Limpieza dental");
+
+        Reserva reservaGuardada = new Reserva();
+        reservaGuardada.setIdReserva(40L);
+        reservaGuardada.setUsuario(usuarioExistente);
+        reservaGuardada.setServicio(servicio);
+        reservaGuardada.setFecha(request.getFecha());
+        reservaGuardada.setHora(request.getHora());
+        reservaGuardada.setEstado("Pendiente");
+
+        when(usuarioRepository.findByEmail("carlos@example.com")).thenReturn(Optional.of(usuarioExistente));
+        when(servicioRepository.findById(2L)).thenReturn(Optional.of(servicio));
+        when(reservaRepository.save(any(Reserva.class))).thenReturn(reservaGuardada);
+
+        ReservaResponse response = reservaService.crearReserva(request);
+
+        assertNotNull(response);
+        assertEquals(40L, response.getIdReserva());
+        assertEquals("Carlos Ruiz", response.getNombreCliente());
+        assertEquals("Pendiente", response.getEstado());
+
+        verify(usuarioRepository, never()).save(any(Usuario.class));
+
+        ArgumentCaptor<Reserva> reservaCaptor = ArgumentCaptor.forClass(Reserva.class);
+        verify(reservaRepository).save(reservaCaptor.capture());
+        assertEquals(usuarioExistente, reservaCaptor.getValue().getUsuario());
+    }
+
+    @Test
+    // Verifica que se lanza una excepción cuando el servicio solicitado no existe.
+    void crearReserva_shouldThrowException_whenServicioDoesNotExist() {
+        ReservaRequest request = new ReservaRequest();
+        request.setNombre("Elena Torres");
+        request.setTelefono("444555666");
+        request.setEmail("elena@example.com");
+        request.setIdServicio(99L);
+        request.setFecha(LocalDate.of(2026, 10, 10));
+        request.setHora(LocalTime.of(16, 30));
+
+        Usuario usuarioExistente = new Usuario("Elena Torres", "444555666", "elena@example.com");
+
+        when(usuarioRepository.findByEmail("elena@example.com")).thenReturn(Optional.of(usuarioExistente));
+        when(servicioRepository.findById(99L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> reservaService.crearReserva(request));
+
+        assertEquals("Servicio no encontrado", exception.getMessage());
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
+
+    @Test
+    // Verifica que se lanza una excepción al intentar actualizar el estado de una reserva inexistente.
+    void actualizarEstadoReserva_shouldThrowException_whenReservaDoesNotExist() {
+        when(reservaRepository.findById(88L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> reservaService.actualizarEstadoReserva(88L, "Confirmada"));
+
+        assertEquals("Reserva no encontrada", exception.getMessage());
+        verify(reservaRepository).findById(88L);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
 }

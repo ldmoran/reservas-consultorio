@@ -131,8 +131,10 @@ En total el proyecto contará con:
 
 ## Pruebas Unitarias
 
-- Pendiente.
-- Pendiente.
+- Se agregaron 3 pruebas unitarias adicionales al archivo `backend/src/test/java/com/reservas/service/ReservaServiceTest.java`, complementando la cobertura de la lógica del servicio de reservas con casos de reutilización de datos y manejo de errores.
+- Prueba 1: Simula la creación de una reserva usando un email que ya existe en el sistema. Verifica que el servicio reutiliza el usuario existente, no crea un usuario nuevo (nunca se llama a `usuarioRepository.save`) y asocia correctamente la reserva al usuario registrado.
+- Prueba 2: Simula la creación de una reserva con un servicio inexistente. Verifica que el servicio lanza una excepción con el mensaje "Servicio no encontrado" y que no se guarda ninguna reserva en el repositorio.
+- Prueba 3: Simula la actualización del estado de una reserva que no existe. Verifica que el servicio lanza una excepción con el mensaje "Reserva no encontrada" y que no se realiza ningún guardado en el repositorio.
 
 ## Pruebas End-to-End (E2E)
 
