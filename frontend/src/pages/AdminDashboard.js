@@ -301,7 +301,7 @@ const AdminDashboard = () => {
                       <td className="py-4 px-4">
                         <div className="flex space-x-2">
                           <Link
-                            to={`/admin/reserva/${reserva.idReserva}`}
+                            to={`/reserva/${reserva.idReserva}`}
                             className="text-primary-600 hover:text-primary-800"
                           >
                             <EyeIcon className="h-5 w-5" />

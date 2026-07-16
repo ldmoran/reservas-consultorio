@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
+import AdminLogin from './pages/AdminLogin';
 import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import ReservaForm from './pages/ReservaForm';
 import ReservaDetail from './pages/ReservaDetail';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,6 +43,9 @@ function App() {
           <Routes>
             {/* Ruta pública - Login */}
             <Route path="/" element={<Login />} />
+
+            {/* Alias de acceso admin */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             
             {/* Rutas protegidas para administradores */}
             <Route 
@@ -51,9 +56,27 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
             
             <Route 
               path="/reserva/:id" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <ReservaDetail />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/admin/reserva/:id" 
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <ReservaDetail />
