@@ -214,6 +214,7 @@ const AdminDashboard = () => {
                 Estado
               </label>
               <select
+                name="estado"
                 className="input-field"
                 value={filtros.estado}
                 onChange={(e) => setFiltros({ ...filtros, estado: e.target.value })}

@@ -21,6 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "e2e": "npx playwright test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0"
   },
