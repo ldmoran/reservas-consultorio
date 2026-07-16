@@ -101,8 +101,10 @@ En total el proyecto contará con:
 
 ## Pruebas Unitarias
 
-- Pendiente.
-- Pendiente.
+- Se creó el archivo `backend/src/test/java/com/reservas/service/ReservaServiceTest.java` para validar la lógica del servicio de reservas sin depender de la base de datos.
+- Prueba 1: Simula la creación de una nueva reserva usando un email que no existe en el sistema. Verifica que el servicio crea un nuevo usuario y guarda correctamente la reserva con estado "Pendiente".
+- Prueba 2: Simula la actualización del estado de una reserva existente. Verifica que el servicio recupera la reserva, cambia el estado a "Confirmada" y devuelve los datos actualizados.
+- Prueba 3: Simula la consulta de reservas filtradas por estado. Verifica que el servicio recupera una lista de reservas con estado "Pendiente" y las convierte correctamente a objetos `ReservaResponse`.
 
 ## Pruebas End-to-End (E2E)
 
