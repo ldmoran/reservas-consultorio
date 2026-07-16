@@ -95,6 +95,9 @@ En total el proyecto contará con:
 - **6 pruebas unitarias.**
 - **6 pruebas End-to-End (E2E).**
 
+- **Estado actual:** Se han implementado 3 pruebas E2E adicionales en `frontend/tests/reservas.e2e.js`.
+- **Quedan pendientes:** 3 pruebas E2E para completar el total de 6.
+
 ---
 
 # David Moran
@@ -108,8 +111,9 @@ En total el proyecto contará con:
 
 ## Pruebas End-to-End (E2E)
 
-- Pendiente.
-- Pendiente.
+- Prueba 1: Admin puede cerrar sesión desde el panel de administración.
+- Prueba 2: Login admin con credenciales inválidas muestra un error.
+- Prueba 3: Validación de formulario de reserva muestra errores cuando los campos obligatorios están vacíos.
 
 ---
 
@@ -140,3 +144,10 @@ En total el proyecto contará con:
 
 - Pendiente.
 - Pendiente.
+
+---
+
+# Notas de seguimiento
+
+- Las pruebas E2E implementadas en `frontend/tests/reservas.e2e.js` ya están documentadas en el proyecto.
+- Se recomienda asignar los tres casos restantes a los integrantes que aún no tienen pruebas E2E registradas para completar la distribución establecida.
